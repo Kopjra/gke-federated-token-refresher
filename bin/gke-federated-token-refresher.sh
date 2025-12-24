@@ -1,4 +1,6 @@
 #!/bin/sh
+trap 'echo "Received SIGTERM, exiting..."; exit 0' TERM
+
 if [ -z "${1}" ]; then
   echo "The first argument must be set to the Google IAM Service Account Unique ID"
   exit 2
@@ -20,5 +22,6 @@ while true; do
     echo "Error: Failed to fetch federated token (exit code: $EXIT_CODE)" >&2
   fi
 
-  sleep 900
+  sleep 900 &
+  wait $!
 done
